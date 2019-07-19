@@ -38,7 +38,7 @@ script:
 #- export
 
 before_deploy:
-- num_stages=$(wc -l stages.txt | awk '{print $1;}'); if [ "$TO_STAGE" == "$num_stages" ] ; then bash docker_extract_files.sh ct /opt/ct ; fi
+- num_stages=$(wc -l stages.txt | awk '{print $1;}'); if [ "$TO_STAGE" == "$num_stages" ] ; then bash docker_extract_files.sh $num_stages /opt/ct ; fi
 
 deploy:
   - provider: script
