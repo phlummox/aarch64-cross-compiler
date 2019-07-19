@@ -9,8 +9,8 @@ services:
 env:
   global:
     - CACHE_DIR=$HOME/.cache/docker
-    - FROM_STAGE=8
-    - TO_STAGE=9
+    - FROM_STAGE=1
+    - TO_STAGE=3
     # first few stages are faster to get from disk than the
     # network, despite what the Travis docco says
     - NUM_STAGES_TO_CACHE=3
