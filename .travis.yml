@@ -14,6 +14,7 @@ env:
     # network, despite what the Travis docco says
     - NUM_STAGES_TO_CACHE=3
     - IMG=phlummox/aarch64-cross-compiler
+    - VERSION=0.1
 
 cache:
   directories:
@@ -29,16 +30,14 @@ script:
 - bash docker_build.sh $NUM_STAGES_TO_BUILD
 - docker images
 - bash travis_save_cache.sh $CACHE_DIR $NUM_STAGES_TO_BUILD $NUM_STAGES_TO_CACHE
-
-before_deploy:
-- # ensure we have some images to push
-  docker images | grep phlummox/aarch64-cross-compiler
+# ensure we have some images
+- docker images | grep phlummox/aarch64-cross-compiler
+# use it
+#- docker
 
 deploy:
   provider: script
   skip_cleanup: true
-  script: bash docker_push.sh $NUM_STAGES_TO_BUILD
+  script: bash docker_push.sh $NUM_STAGES_TO_BUILD $VERSION
   on:
     branch: build
-
-

@@ -138,5 +138,12 @@ RUN CT_DEBUG_CT_SAVE_STEPS=y ct-ng build.$(nproc) V=1 RESTART=cc_for_build ; tai
 #############
 FROM base as ct
 
+USER root
+WORKDIR /work
+ENV PATH=/opt/ct/aarch64-unknown-linux-musl/bin
+
 COPY --from=build_aarch64_ct_pt4 $ct_prefix $ct_prefix
+
+
+
 

@@ -4,13 +4,13 @@ set -euo pipefail
 
 source util_funcs.sh
 
-if [ "$#" -ne 1 ]; then
-  echo 'expected 1 arg, stage to run to' >&2
+if [ "$#" -ne 2 ]; then
+  echo 'expected 2 args: num stages to run, current version to tag' >&2
   exit 1
 fi
 
 run_to_stage=$1
-ct_version=0.1
+ct_version=$2
 img=$IMG
 stages=( $(cat stages.txt) );
 
