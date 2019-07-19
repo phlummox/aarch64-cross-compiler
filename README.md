@@ -1,4 +1,4 @@
-# AArch64 cross-toolchain (from x86\_64) [![Docker Build Status](https://img.shields.io/travis/phlummox/docker-aarch64-cross-compiler.svg?label=Docker%20build)](https://travis-ci.org/phlummox/docker-aarch64-cross-compiler)
+# AArch64 cross-toolchain (from x86\_64) [![Docker Build Status](https://img.shields.io/travis/phlummox/aarch64-cross-compiler.svg?label=Docker%20build)](https://travis-ci.org/phlummox/aarch64-cross-compiler)
 
 Build of a cross-compiler toolchain from x86\_64 to aarch64, using
 [Crosstool-NG][ct-ng].
