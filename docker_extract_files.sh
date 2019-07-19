@@ -4,12 +4,12 @@ set -euo pipefail
 
 source util_funcs.sh
 
+set -x
+
 if [ "$#" -ne 2 ]; then
   echo 'expected 2 args: stage-to-use, path-to-extract' >&2
   exit 1
 fi
-
-set -x
 
 col_msg "$0: extracting toolchain from image"
 
@@ -19,11 +19,17 @@ img=$IMG
 stages=( $(cat stages.txt) );
 stage_to_use=${stages[$stage_to_use_idx]}
 
-ctr_id=$(docker run --detach $img:$stage_to_use)
-set -x
-tmpdir=$(mktemp -d --tmpdir=.)
-docker cp $ctr_id:$path_to_extract $tmpdir/
-#tar cvf aarch64-ct-${VERSION}.tar.xz --xz /opt/ct  
-set +x
+# strip leading slash
+stripped_path=$(echo $path_to_extract | sed 's|^/||')
 
+ctr_id=$(docker run --name ct-extractor --detach $img:$stage_to_use)
+tmpdir=$(mktemp -d --tmpdir=.)
+set -x
+mkdir -p $tmpdir/$(dirname $path_to_extract)
+docker cp $ctr_id:$path_to_extract $tmpdir/$path_to_extract
+fakeroot tar cvf aarch64-ct-${VERSION}.tar.xz --xz -C $tmpdir $stripped_path
+docker stop $ctr_id
+docker rm $ctr_id
+set +x
+rm -rf $tmpdir
 
