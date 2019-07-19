@@ -35,10 +35,21 @@ script:
 - docker images | grep phlummox/aarch64-cross-compiler
 # use it
 #- docker
+- export 
 
 deploy:
-  provider: script
-  skip_cleanup: true
-  script: bash docker_push.sh $FROM_STAGE $TO_STAGE $VERSION
-  on:
-    branch: build
+  - provider: script
+    skip_cleanup: true
+    script: bash docker_push.sh $FROM_STAGE $TO_STAGE $VERSION
+    on:
+      branch: build
+#  - deploy:
+#      provider: releases
+#      api_key: "GITHUB OAUTH TOKEN"
+#      file: "FILE TO UPLOAD"
+#      skip_cleanup: true
+#      draft: true
+#      # ^^ TODO: remove
+#      on:
+#        #tags: true
+#        branch: build

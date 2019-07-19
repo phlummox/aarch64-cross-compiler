@@ -4,7 +4,7 @@ set -euo pipefail
 
 source util_funcs.sh
 
-if [ "$#" -ne 2 ]; then
+if [ "$#" -ne 3 ]; then
   echo 'expected 3 args: from-stage, to-stage, version-tag' >&2
   exit 1
 fi
