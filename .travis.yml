@@ -40,3 +40,5 @@ deploy:
   script: bash docker_push.sh $NUM_STAGES_TO_BUILD
   on:
     branch: build
+
+
