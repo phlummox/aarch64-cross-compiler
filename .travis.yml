@@ -46,13 +46,14 @@ deploy:
     script: bash docker_push.sh $FROM_STAGE $TO_STAGE $VERSION
     on:
       branch: build
-#  - deploy:
-#      provider: releases
-#      api_key: "GITHUB OAUTH TOKEN"
-#      file: "aarch64-ct-${VERSION}.tar.xz"
-#      skip_cleanup: true
-#      draft: true
-#      # ^^ TODO: remove
-#      on:
-#        #tags: true
-#        branch: build
+#  - provider: releases
+#    api_key:
+#      secure: BxE5wavSdaFALoFQcLuC26TP0rV7M9QMJHZB3f4Js1cMkqF2tDdj8H858XnpP6IHeUmMlYaIZayeOkcxPsmDQjvhJ55WpjIP4QeX79kLmYuwwGd65CDx/vFkYHLiD8dXjFag6/AEY3RnwPbafPnHhWE9EHf86dVTpYj6/lL9o5YIVryXTXh0JfrBWmTGZrbvnzeLe0M/oWz4xhUB4EEHbmfvIF76Jw9pGWKnVS7uax5mzpa6qoN8nXccQ0FzXSV7o5kvxxxUv9852fpaTXjyYcjXzpdvWJYNg9XSxXf80bcQQDCC7wX6yldPFqVqqZFc5TjkNxFSCU+5sQXoHm2weYVELVhViMn1xAAA1+yPpR9SGv/T3zkymITZ5BpjLB+3EnIFvd3IP2k3JAjdA6iqoPmM473HqCYYai6FnjemVsQVPy7sdMNRY4KUZ7DNo3ztmIJhSFOp+fWDVp7/098+dST98giBW+8k34nxlQ37qIxvF81zRdO6uN2WX8Qfjy5oHn7c5En8ZiwqA625gAS0ANqqy+8QCpy8tNWietzEqouYAHVGj7IMcohbxHCmr1q8ucwJOSllOUxWJXd2lKQLmKNOPIuJEjUAQBY85DNwo4GsU/in4PgrYPFspwNCLcqeoO5QYn4HUeXof6d9IHWfp+eRgNWKI8Y1qRK94tWhuzc=
+#    file: aarch64-ct-${VERSION}.tar.xz
+#    draft: true
+#    skip_cleanup: true
+#    on:
+#      repo: phlummox/aarch64-cross-compiler
+#      branch: build
+
+

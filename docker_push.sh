@@ -21,10 +21,7 @@ col_msg "- logging in"
 echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USER" --password-stdin
 col_msg "- result of login: $?"
 
-head *.id.txt
-  
 for ((i=from_idx; i < to_idx; i=i+1)); do
-  set -x
   curr_stage=${stages[$i]}
 
   cached_id=""
@@ -38,11 +35,10 @@ for ((i=from_idx; i < to_idx; i=i+1)); do
     col_msg "- pushing stage $curr_stage"
     set -x
     docker push $img:$curr_stage
-    #set +x
+    set +x
   else
     col_msg "- no change in $img:$curr_stage, not pushing"
   fi
-set +x
 done
 
 s=$((to_idx - 1))
