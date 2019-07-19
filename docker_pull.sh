@@ -1,5 +1,11 @@
 #!/usr/bin/env bash
 
+########
+# Pull images from Docker hub.
+#
+# Also: record image IDs currently in Docker, so we can
+# push later if changed.
+
 set -euo pipefail
 
 source util_funcs.sh
@@ -22,5 +28,7 @@ for ((i=from_idx ; i < to_idx; i=i+1)); do
   set -x
   docker pull $img:$curr_stage || true
   set +x
+
+  docker inspect --format="{{.ID}}" $img:$curr_stage > "${curr_stage}.id.txt"
 done
 

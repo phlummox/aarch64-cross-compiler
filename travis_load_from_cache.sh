@@ -26,7 +26,6 @@ for ((i=0; i < to_idx && i < num_stages_to_cache ; i=i+1)); do
     set -x
     gunzip -c ${stage_cache_file} | docker load;
     set +x
-    docker inspect --format="{{.ID}}" $img:$curr_stage > "${curr_stage}.id.txt"
   fi
 done
 

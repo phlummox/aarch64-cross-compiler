@@ -10,7 +10,7 @@ env:
   global:
     - CACHE_DIR=$HOME/.cache/docker
     - FROM_STAGE=1
-    - TO_STAGE=8
+    - TO_STAGE=9
     # first few stages are faster to get from disk than the
     # network, despite what the Travis docco says
     - NUM_STAGES_TO_CACHE=3
@@ -37,6 +37,9 @@ script:
 #- docker
 #- export
 
+#before_deploy:
+#- if [ "$TO_STAGE" == "9" ] ; then bash docker_extract_files.sh  ; fi
+
 deploy:
   - provider: script
     skip_cleanup: true
@@ -46,7 +49,7 @@ deploy:
 #  - deploy:
 #      provider: releases
 #      api_key: "GITHUB OAUTH TOKEN"
-#      file: "FILE TO UPLOAD"
+#      file: "aarch64-ct-${VERSION}.tar.xz"
 #      skip_cleanup: true
 #      draft: true
 #      # ^^ TODO: remove
