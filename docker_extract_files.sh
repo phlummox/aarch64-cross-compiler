@@ -27,7 +27,8 @@ tmpdir=$(mktemp -d --tmpdir=.)
 set -x
 mkdir -p $tmpdir/$(dirname $path_to_extract)
 docker cp $ctr_id:$path_to_extract $tmpdir/$path_to_extract
-fakeroot tar cvf aarch64-ct-${VERSION}.tar.xz --xz -C $tmpdir $stripped_path
+# use pv to avoid lack of output on Travis
+fakeroot tar cvf - --xz -C $tmpdir $stripped_path | pv > aarch64-ct-${VERSION}.tar.xz
 docker stop $ctr_id
 docker rm $ctr_id
 set +x
