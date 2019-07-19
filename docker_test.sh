@@ -9,7 +9,7 @@ col_msg "$0: call toolchain"
 set -x
 echo 'int main(){return 42;}' > c_test.c
 docker run --rm  -v ${PWD}:/work -w /work phlummox/aarch64-cross-compiler:$final_stage gcc -static -o c_test c_test.c
-./c_test
+qemu-aarch64 ./c_test
 result=$?
 set +x
 
