@@ -10,7 +10,7 @@ env:
   global:
     - CACHE_DIR=$HOME/.cache/docker
     - FROM_STAGE=1
-    - TO_STAGE=7
+    - TO_STAGE=8
     # first few stages are faster to get from disk than the
     # network, despite what the Travis docco says
     - NUM_STAGES_TO_CACHE=3
@@ -25,7 +25,7 @@ before_install:
 - |
   bash travis_load_from_cache.sh $CACHE_DIR 1 $TO_STAGE $NUM_STAGES_TO_CACHE
   bash docker_pull.sh $FROM_STAGE $TO_STAGE
-
+- sudo apt-get install xz-utils
 
 script:
 - bash docker_build.sh $FROM_STAGE $TO_STAGE
