@@ -5,7 +5,7 @@ set -euo pipefail
 source util_funcs.sh
 
 if [ "$#" -ne 2 ]; then
-  echo 'expected 2 args, stage to run from, stage to run to' >&2
+  echo 'expected 2 args: from-stage, to-stage' >&2
   exit 1
 fi
 

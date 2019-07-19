@@ -24,7 +24,7 @@ cache:
 before_install:
 - |
   bash travis_load_from_cache.sh $CACHE_DIR 1 $TO_STAGE $NUM_STAGES_TO_CACHE
-  bash docker_pull.sh 1 $TO_STAGE
+  bash docker_pull.sh $FROM_STAGE $TO_STAGE
 
 
 script:

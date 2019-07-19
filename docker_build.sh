@@ -19,7 +19,8 @@ col_msg "$0: building docker stages"
 for ((i=from_idx; i < to_idx; i=i+1)); do
   curr_stage=${stages[$i]}
   caches_needed=""
-  for ((j=from_idx; j <= i; j=j+1)); do
+  # in general, we assume we need all prior stages
+  for ((j=0; j <= i; j=j+1)); do
     cache_stage=${stages[$j]}
     caches_needed="$caches_needed --cache-from=$img:${cache_stage}"
   done
