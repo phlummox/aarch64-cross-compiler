@@ -12,7 +12,7 @@ fi
 cache_dir=$1
 from_idx=$(($2 - 1))
 to_idx=$3 # one-past-end
-num_stages_to_cache=$3
+num_stages_to_cache=$4
 img=$IMG
 stages=( $(cat stages.txt) );
 
@@ -39,4 +39,4 @@ for ((i=from_idx; i < to_idx && i < num_stages_to_cache; i=i+1)); do
   else
     col_msg "- no change in stage $curr_stage, not saving to cache"
   fi
-done 
+done
