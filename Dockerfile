@@ -140,7 +140,8 @@ FROM base as ct
 
 USER root
 WORKDIR /work
-ENV PATH=/opt/ct/aarch64-unknown-linux-musl/bin
+ENV PATH=/opt/ct/aarch64-unknown-linux-musl/bin:$PATH
+ENV HOME=/root
 
 COPY --from=build_aarch64_ct_pt4 $ct_prefix $ct_prefix
 
