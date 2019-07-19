@@ -134,17 +134,16 @@ FROM build_aarch64_ct_pt3 as build_aarch64_ct_pt4
 RUN CT_DEBUG_CT_SAVE_STEPS=y ct-ng build.$(nproc) V=1 RESTART=cc_for_build ; tail -n 50 build.log; true
 
 #############
-# final image
+# "runtime"
 #############
-FROM base as ct
+
+FROM base as ct_base
+
+COPY --from=build_aarch64_ct_pt4 $ct_prefix $ct_prefix
+
+FROM ct_base as ct
 
 USER root
 WORKDIR /work
 ENV PATH=/opt/ct/aarch64-unknown-linux-musl/bin:$PATH
 ENV HOME=/root
-
-COPY --from=build_aarch64_ct_pt4 $ct_prefix $ct_prefix
-
-
-
-

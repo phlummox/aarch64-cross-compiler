@@ -5,4 +5,5 @@ build_aarch64_ct
 build_aarch64_ct_pt2
 build_aarch64_ct_pt3
 build_aarch64_ct_pt4
+ct_base
 ct
