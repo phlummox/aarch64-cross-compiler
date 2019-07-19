@@ -25,17 +25,16 @@ before_install:
 - |
   bash travis_load_from_cache.sh $CACHE_DIR 1 $TO_STAGE $NUM_STAGES_TO_CACHE
   bash docker_pull.sh $FROM_STAGE $TO_STAGE
-- sudo apt-get install xz-utils
+- sudo apt-get install -y xz-utils qemu-user fakeroot
 
 script:
 - bash docker_build.sh $FROM_STAGE $TO_STAGE
+# try it
+- bash docker_test.sh
 - docker images
 - bash travis_save_cache.sh $CACHE_DIR $FROM_STAGE $TO_STAGE $NUM_STAGES_TO_CACHE
 # ensure we have some images
 - docker images | grep phlummox/aarch64-cross-compiler
-# use it
-#- docker
-#- export
 
 before_deploy:
 - num_stages=$(wc -l stages.txt | awk '{print $1;}'); if [ "$TO_STAGE" == "$num_stages" ] ; then bash docker_extract_files.sh $num_stages /opt/ct ; fi
