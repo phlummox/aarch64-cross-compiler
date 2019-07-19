@@ -66,7 +66,7 @@ you could just replace all the Dockerfile stages starting
 "build\_aarch64\_ct..." with a single stage containing the instruction
 
 ```
-RUN CT_DEBUG_CT_SAVE_STEPS=y ct-ng build.$(nproc) V=1
+RUN ct-ng build.$(nproc) V=1
 ```
 
 and that should build much, much quicker than the Dockerfile given
