@@ -9,7 +9,8 @@ services:
 env:
   global:
     - CACHE_DIR=$HOME/.cache/docker
-    - NUM_STAGES_TO_BUILD=8
+    - FROM_STAGE=8
+    - TO_STAGE=9
     # first few stages are faster to get from disk than the
     # network, despite what the Travis docco says
     - NUM_STAGES_TO_CACHE=3
@@ -22,14 +23,14 @@ cache:
 
 before_install:
 - |
-  bash travis_load_from_cache.sh $CACHE_DIR $NUM_STAGES_TO_BUILD $NUM_STAGES_TO_CACHE
-  bash docker_pull.sh $NUM_STAGES_TO_BUILD
+  bash travis_load_from_cache.sh $CACHE_DIR 1 $TO_STAGE $NUM_STAGES_TO_CACHE
+  bash docker_pull.sh 1 $TO_STAGE
 
 
 script:
-- bash docker_build.sh $NUM_STAGES_TO_BUILD
+- bash docker_build.sh $FROM_STAGE $TO_STAGE
 - docker images
-- bash travis_save_cache.sh $CACHE_DIR $NUM_STAGES_TO_BUILD $NUM_STAGES_TO_CACHE
+- bash travis_save_cache.sh $CACHE_DIR $FROM_STAGE $TO_STAGE $NUM_STAGES_TO_CACHE
 # ensure we have some images
 - docker images | grep phlummox/aarch64-cross-compiler
 # use it
@@ -38,6 +39,6 @@ script:
 deploy:
   provider: script
   skip_cleanup: true
-  script: bash docker_push.sh $NUM_STAGES_TO_BUILD $VERSION
+  script: bash docker_push.sh $FROM_STAGE $TO_STAGE $VERSION
   on:
     branch: build

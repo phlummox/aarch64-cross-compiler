@@ -145,5 +145,10 @@ FROM ct_base as ct
 
 USER root
 WORKDIR /work
-ENV PATH=/opt/ct/aarch64-unknown-linux-musl/bin:$PATH
+ARG quad=aarch64-unknown-linux-musl
+ENV PATH=/opt/ct/$quad/bin:$PATH
 ENV HOME=/root
+
+RUN \
+  cd $ct_prefix/$quad/bin; for prog in *; do ln -s ${prog} ${prog#$quad-}; done
+  
