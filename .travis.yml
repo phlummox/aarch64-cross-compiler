@@ -25,7 +25,7 @@ before_install:
 - |
   bash travis_load_from_cache.sh $CACHE_DIR 1 $TO_STAGE $NUM_STAGES_TO_CACHE
   bash docker_pull.sh $FROM_STAGE $TO_STAGE
-- sudo apt-get install -y xz-utils qemu-user fakeroot
+- sudo apt-get install -y xz-utils qemu-user fakeroot pv
 
 script:
 - bash docker_build.sh $FROM_STAGE $TO_STAGE
