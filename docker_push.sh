@@ -4,13 +4,14 @@ set -euo pipefail
 
 source util_funcs.sh
 
-if [ "$#" -ne 1 ]; then
-  echo 'expected 1 arg, stage to run to' >&2
+if [ "$#" -ne 3 ]; then
+  echo 'expected 3 args: from-stage, to-stage, version-tag' >&2
   exit 1
 fi
 
-run_to_stage=$1
-ct_version=0.1
+from_idx=$(($1-1))
+to_idx=$2 # one-past-end
+ct_version=$3
 img=$IMG
 stages=( $(cat stages.txt) );
 
@@ -20,8 +21,7 @@ col_msg "- logging in"
 echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USER" --password-stdin
 col_msg "- result of login: $?"
 
-  
-for ((i=0; i < run_to_stage; i=i+1)); do
+for ((i=from_idx; i < to_idx; i=i+1)); do
   curr_stage=${stages[$i]}
 
   cached_id=""
@@ -41,7 +41,7 @@ for ((i=0; i < run_to_stage; i=i+1)); do
   fi
 done
 
-s=$((run_to_stage - 1))
+s=$((to_idx - 1))
 last_stage_run=${stages[$s]}
 
 if [[ "${last_stage_run}" == "ct" ]] ; then

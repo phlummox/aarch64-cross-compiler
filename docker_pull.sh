@@ -1,25 +1,34 @@
 #!/usr/bin/env bash
 
+########
+# Pull images from Docker hub.
+#
+# Also: record image IDs currently in Docker, so we can
+# push later if changed.
+
 set -euo pipefail
 
 source util_funcs.sh
 
-if [ "$#" -ne 1 ]; then
-  echo 'expected 1 arg, stage to run to' >&2
+if [ "$#" -ne 2 ]; then
+  echo 'expected 2 args: from-stage, to-stage' >&2
   exit 1
 fi
 
-num_stages_to_build=$1
+from_idx=$(($1 - 1))
+to_idx=$2 # one-past-end
 img=$IMG
 stages=( $(cat stages.txt) );
 
 col_msg "$0: pulling docker images from registry"
 
-for ((i=0; i < num_stages_to_build; i=i+1)); do
+for ((i=from_idx ; i < to_idx; i=i+1)); do
   curr_stage=${stages[$i]}
   col_msg "- try fetching stage $curr_stage"
   set -x
   docker pull $img:$curr_stage || true
   set +x
+
+  docker inspect --format="{{.ID}}" $img:$curr_stage > "${curr_stage}.id.txt"
 done
 
