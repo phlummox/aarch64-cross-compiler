@@ -1,9 +1,54 @@
 # AArch64 cross-toolchain (from x86\_64) [![Docker Build Status](https://img.shields.io/travis/phlummox/aarch64-cross-compiler.svg?label=Docker%20build)](https://travis-ci.org/phlummox/aarch64-cross-compiler)
 
 Build of a cross-compiler toolchain from x86\_64 to aarch64, using
-[Crosstool-NG][ct-ng].
+[Crosstool-NG][ct-ng], within an [Alpine Linux][alpine] Docker container.
+Docker images containing the built toolchain are available from
+[Docker Hub][docker-hub], and just the built toolchain from the
+"[Releases][releases]" page.
 
 [ct-ng]: https://crosstool-ng.github.io/
+[alpine]: https://alpinelinux.org/
+[docker-hub]: https://hub.docker.com/r/phlummox/aarch64-cross-compiler/
+[releases]: https://github.com/phlummox/aarch64-cross-compiler/releases
+
+## Running the cross-compiler
+
+It would be nice to have linked all the executables in the toolchain
+statically, but that led to build errors. So the tools must be run
+in a system with the [musl libc][musl] shared libraries in the library
+search path.
+
+[musl]: https://www.musl-libc.org/
+
+If you're on such a system, you can just untar the toolchain somewhere -
+call it /path/to/ct - prepend /path/to/ct to your PATH, and:
+
+```
+$ echo 'int main(){return 42;}' > c_test.c
+$ gcc -static -o c_test c_test.c
+```
+
+The toolchain is also available in a Docker image, so if you're not
+on such a system, but have Docker installed, you could run:
+
+```
+$ docker run --rm -v $PWD:/work -w /work phlummox/aarch64-cross-compiler:latest gcc -static -o c_test c_test.c
+```
+
+(This mounts your current directory within a Docker container at the path
+`/work`, and compiles `c_test.c` there using the latest version of the Docker image.)
+
+To test the resulting binaries while still on an x86\_64 system, you can use
+the `qemu-aarch64` program (on Ubuntu, this is available from the `qemu-user`
+package):
+
+```
+$ sudo apt-get install qemu-user
+$ qemu-aarch64 ./c_test
+$ echo $?
+42
+```
+
 
 ## Re-building
 
