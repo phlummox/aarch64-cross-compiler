@@ -1,0 +1,42 @@
+language: bash
+sudo: required
+
+if: branch = build
+
+services:
+- docker
+
+env:
+  global:
+    - CACHE_DIR=$HOME/.cache/docker
+    - NUM_STAGES_TO_BUILD=5
+    # first few stages are faster to get from disk than the
+    # network, despite what the Travis docco says
+    - NUM_STAGES_TO_CACHE=3
+    - IMG=phlummox/aarch64-cross-compiler
+
+cache:
+  directories:
+  - $CACHE_DIR
+
+before_install:
+- |
+  bash travis_load_from_cache.sh $CACHE_DIR $NUM_STAGES_TO_BUILD $NUM_STAGES_TO_CACHE
+  bash docker_pull.sh $NUM_STAGES_TO_BUILD
+
+
+script:
+- bash docker_build.sh $NUM_STAGES_TO_BUILD
+- docker images
+- bash travis_save_cache.sh $CACHE_DIR $NUM_STAGES_TO_BUILD $NUM_STAGES_TO_CACHE
+
+before_deploy:
+- # ensure we have some images to push
+  docker images | grep phlummox/aarch64-cross-compiler
+
+deploy:
+  provider: script
+  skip_cleanup: true
+  script: bash docker_push.sh $NUM_STAGES_TO_BUILD
+  on:
+    branch: build
